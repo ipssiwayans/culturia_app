@@ -17,7 +17,7 @@ class Review
     private ?int $note = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviews')]
-    private ?item $item = null;
+    private ?Item $item = null;
 
     #[ORM\ManyToOne(inversedBy: 'reviews')]
     private ?User $user = null;
@@ -39,12 +39,12 @@ class Review
         return $this;
     }
 
-    public function getItem(): ?item
+    public function getItem(): ?Item
     {
         return $this->item;
     }
 
-    public function setItem(?item $item): static
+    public function setItem(?Item $item): static
     {
         $this->item = $item;
 

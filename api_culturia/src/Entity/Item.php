@@ -29,13 +29,16 @@ class Item
     private ?string $author_description = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
-    private ?category $category = null;
+    private ?Category $category = null;
 
     /**
      * @var Collection<int, Review>
      */
     #[ORM\OneToMany(targetEntity: Review::class, mappedBy: 'item')]
     private Collection $reviews;
+
+    #[ORM\Column(nullable: true)]
+    private ?float $average_review = null;
 
     public function __construct()
     {
@@ -95,12 +98,12 @@ class Item
         return $this;
     }
 
-    public function getCategory(): ?category
+    public function getCategory(): ?Category
     {
         return $this->category;
     }
 
-    public function setCategory(?category $category): static
+    public function setCategory(?Category $category): static
     {
         $this->category = $category;
 
@@ -133,6 +136,18 @@ class Item
                 $review->setItem(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getAverageReview(): ?float
+    {
+        return $this->average_review;
+    }
+
+    public function setAverageReview(?float $average_review): static
+    {
+        $this->average_review = $average_review;
 
         return $this;
     }

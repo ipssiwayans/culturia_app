@@ -49,7 +49,8 @@ class ApiManager
             ->setTitle($data['title'])
             ->setAuthor($data['author'] ?? null)
             ->setAuthorDescription($data['author_description'] ?? null)
-            ->setDescription($data['description'] ?? null);
+            ->setDescription($data['description'] ?? null)
+            ->setImage($data['image'] ?? null);
 
         $this->entityManager->persist($item);
         $this->entityManager->flush();

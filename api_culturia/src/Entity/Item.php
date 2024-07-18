@@ -40,6 +40,9 @@ class Item
     #[ORM\Column(nullable: true)]
     private ?float $average_review = null;
 
+    #[ORM\Column(length: 1024, nullable: true)]
+    private ?string $image = null;
+
     public function __construct()
     {
         $this->reviews = new ArrayCollection();
@@ -148,6 +151,18 @@ class Item
     public function setAverageReview(?float $average_review): static
     {
         $this->average_review = $average_review;
+
+        return $this;
+    }
+
+    public function getImage(): ?string
+    {
+        return $this->image;
+    }
+
+    public function setImage(?string $image): static
+    {
+        $this->image = $image;
 
         return $this;
     }

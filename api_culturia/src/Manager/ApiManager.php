@@ -18,7 +18,6 @@ class ApiManager
     }
 
     // Item
-
     public function getItemsByCategory(int $categoryId): array
     {
         $items = $this->entityManager->getRepository(Item::class)->findBy(['category' => $categoryId]);
@@ -99,7 +98,6 @@ class ApiManager
     }
 
     // Category
-
     public function getAllItems(): array
     {
         $items = $this->entityManager->getRepository(Item::class)->findAll();
@@ -120,7 +118,6 @@ class ApiManager
     }
 
     // User
-
     public function getAllCategories(): array
     {
         $categories = $this->entityManager->getRepository(Category::class)->findAll();
@@ -137,7 +134,6 @@ class ApiManager
     }
 
     // Review
-
     public function getAllUsers(): array
     {
         $users = $this->entityManager->getRepository(User::class)->findAll();

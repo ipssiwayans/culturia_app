@@ -30,6 +30,7 @@ class ApiManager
                 'author' => $item->getAuthor(),
                 'description' => $item->getDescription(),
                 'author_description' => $item->getAuthorDescription(),
+                'image' => $item->getImage(),
             ];
         }
 
@@ -74,6 +75,7 @@ class ApiManager
                 'description' => $item->getDescription(),
                 'author_description' => $item->getAuthorDescription(),
                 'average_review' => $item->getAverageReview(),
+                'image' => $item->getImage(),
             ];
         }
 
@@ -111,6 +113,7 @@ class ApiManager
                 'author' => $item->getAuthor(),
                 'description' => $item->getDescription(),
                 'author_description' => $item->getAuthorDescription(),
+                'image' => $item->getImage(),
             ];
         }
 

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/api', name: 'api')]
+#[Route('/api', name: 'api.')]
 class ApiController extends AbstractController
 {
 
@@ -53,7 +53,6 @@ class ApiController extends AbstractController
     {
 
         $items = $apiManager->getTopRatedItems($categoryId);
-        dd($items);
         return new JsonResponse([
             'route' => 'get_top_rated_items',
             'items' => $items,

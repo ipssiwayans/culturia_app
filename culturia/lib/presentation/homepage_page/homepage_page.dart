@@ -59,6 +59,13 @@ class _HomepagePageState extends State<HomepagePage> {
     }
   }
 
+  String getValidImagePath(String? imagePath) {
+    const String defaultImagePath = "assets/images/default.png";
+    return imagePath == null || imagePath.isEmpty
+        ? defaultImagePath
+        : imagePath;
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -71,9 +78,9 @@ class _HomepagePageState extends State<HomepagePage> {
                   children: [
                     SizedBox(height: 20.h),
                     _buildWelcomeSection(context),
-                    SizedBox(height: 12.h),
+                    SizedBox(height: 20.h),
                     _buildCategoriesSection(context),
-                    SizedBox(height: 22.h),
+                    SizedBox(height: 20.h),
                     _buildTopItemsSection(context),
                     _buildFeaturedItemsSection(context),
                   ],
@@ -86,7 +93,6 @@ class _HomepagePageState extends State<HomepagePage> {
     );
   }
 
-  // Section des Widgets
   Widget _buildWelcomeSection(BuildContext context) {
     return Container(
       width: double.maxFinite,
@@ -101,7 +107,7 @@ class _HomepagePageState extends State<HomepagePage> {
               style: CustomTextStyles.bodyLargeGray60001,
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 5.h),
           Container(
             width: 280.h,
             margin: EdgeInsets.only(left: 4.h),
@@ -114,7 +120,7 @@ class _HomepagePageState extends State<HomepagePage> {
               ),
             ),
           ),
-          SizedBox(height: 4.h),
+          SizedBox(height: 20.h),
           SizedBox(
             height: 50.h,
             width: double.maxFinite,
@@ -250,7 +256,7 @@ class _HomepagePageState extends State<HomepagePage> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           CustomImageView(
-            imagePath: item['image'],
+            imagePath: getValidImagePath(item['image']),
             height: 150.h,
             width: double.maxFinite,
             radius: BorderRadius.circular(20.h),
@@ -277,32 +283,6 @@ class _HomepagePageState extends State<HomepagePage> {
     );
   }
 
-  // Widget _buildUserProfileSection(BuildContext context) {
-  //   return SizedBox(
-  //     width: double.maxFinite,
-  //     child: Align(
-  //       alignment: Alignment.centerLeft,
-  //       child: SizedBox(
-  //         height: 308.h,
-  //         child: ListView.separated(
-  //           padding: EdgeInsets.only(left: 28.h),
-  //           scrollDirection: Axis.horizontal,
-  //           separatorBuilder: (context, index) {
-  //             return SizedBox(
-  //               width: 40.h,
-  //             );
-  //           },
-  //           itemCount: 5,
-  //           itemBuilder: (context, index) {
-  //             return const UserprofilesectionItemWidget();
-  //           },
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
-
-  // Mise à jour pour afficher les items récupérés dans cette section
   Widget _buildFeaturedItemsSection(BuildContext context) {
     return Container(
       width: double.maxFinite,
@@ -349,7 +329,7 @@ class _HomepagePageState extends State<HomepagePage> {
         alignment: Alignment.center,
         children: [
           CustomImageView(
-            imagePath: item['image'],
+            imagePath: getValidImagePath(item['image']),
             height: 268.h,
             width: double.maxFinite,
             radius: BorderRadius.circular(20.h),

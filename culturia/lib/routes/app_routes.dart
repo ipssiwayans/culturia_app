@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../homepage/homepage_bottom_bar/homepage_bottom_bar.dart';
-import '../homepage/init_page_screen/init_page_screen.dart';
+import '../app/homepage_bottom_bar/homepage_bottom_bar.dart';
+import '../app/init_page_screen/initial_screen.dart';
 
 class AppRoutes {
   static const String initPageScreen = '/init_page_screen';

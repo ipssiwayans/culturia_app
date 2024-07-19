@@ -16,7 +16,6 @@ extension on TextStyle {
   }
 }
 
-// Une collection de style de texte pré-définis
 class CustomTextStyles {
   static get bodyLargeBlack900 => theme.textTheme.bodyLarge!.copyWith(
         color: appTheme.black900,

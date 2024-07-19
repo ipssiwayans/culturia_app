@@ -219,7 +219,6 @@ class _HomepagePageState extends State<HomepagePage> {
               ? SizedBox(
                   height: 250.h,
                   child: ListView.separated(
-                    padding: EdgeInsets.only(left: 30.h),
                     scrollDirection: Axis.horizontal,
                     separatorBuilder: (context, index) {
                       return SizedBox(

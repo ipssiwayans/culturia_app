@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../core/app_export.dart';
 
 enum BottomBarEnum { User, Close, Bookmark, Search }
@@ -89,7 +90,8 @@ class CustomBottomBarState extends State<CustomBottomBar> {
 }
 
 class BottomMenuModel {
-  BottomMenuModel({required this.icon, required this.activeIcon, required this.type});
+  BottomMenuModel(
+      {required this.icon, required this.activeIcon, required this.type});
 
   String? icon;
 
@@ -107,19 +109,16 @@ class DefaultWidget extends StatelessWidget {
       color: const Color(0xffffffff),
       padding: const EdgeInsets.all(10),
       child: const Center(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Please replace the respective Widget here',
+          child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text('En cours de développement',
               style: TextStyle(
                 fontSize: 18,
-              )
-            )
-          ],
-        )
-      ),
+              ))
+        ],
+      )),
     );
   }
 }

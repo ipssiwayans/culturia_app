@@ -18,12 +18,31 @@ class HomepagePage extends StatefulWidget {
 class _HomepagePageState extends State<HomepagePage> {
   List<Map<String, dynamic>> items = [];
   List<Map<String, dynamic>> topItems = [];
+  List<Map<String, dynamic>> filteredItems = [];
   String selectedCategoryName = 'Films';
+  TextEditingController searchController = TextEditingController();
 
   @override
   void initState() {
     super.initState();
     fetchItemsByCategory(1, 'Films');
+    searchController.addListener(_filterItems);
+  }
+
+  @override
+  void dispose() {
+    searchController.dispose();
+    super.dispose();
+  }
+
+  void _filterItems() {
+    String query = searchController.text.toLowerCase();
+    setState(() {
+      filteredItems = items.where((item) {
+        return item['title'].toString().toLowerCase().contains(query) ||
+            item['author'].toString().toLowerCase().contains(query);
+      }).toList();
+    });
   }
 
   void fetchItemsByCategory(int categoryId, String categoryName) async {
@@ -34,6 +53,7 @@ class _HomepagePageState extends State<HomepagePage> {
       var jsonResponse = json.decode(response.body);
       setState(() {
         items = List<Map<String, dynamic>>.from(jsonResponse['items']);
+        filteredItems = items;
         selectedCategoryName = categoryName;
       });
       fetchTopItemsByCategory(categoryId);
@@ -51,7 +71,6 @@ class _HomepagePageState extends State<HomepagePage> {
       var jsonResponse = json.decode(response.body);
       setState(() {
         topItems = List<Map<String, dynamic>>.from(jsonResponse['items']);
-        print(topItems);
       });
     } else {
       print(
@@ -127,42 +146,35 @@ class _HomepagePageState extends State<HomepagePage> {
             child: Stack(
               alignment: Alignment.centerRight,
               children: [
-                IntrinsicHeight(
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Container(
-                      width: 274.h,
-                      padding: EdgeInsets.symmetric(
-                        horizontal: 14.h,
-                        vertical: 12.h,
+                Container(
+                  width: double.maxFinite,
+                  constraints: BoxConstraints(minHeight: 50.h),
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 14.h,
+                    vertical: 12.h,
+                  ),
+                  decoration: AppDecoration.fillGray.copyWith(
+                    borderRadius: BorderRadiusStyle.roundedBorder10,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      CustomImageView(
+                        imagePath: ImageConstant.imgRewind,
+                        height: 16.h,
+                        width: 10.h,
                       ),
-                      decoration: AppDecoration.fillGray.copyWith(
-                        borderRadius: BorderRadiusStyle.roundedBorder10,
-                      ),
-                      child: Row(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          CustomImageView(
-                            imagePath: ImageConstant.imgRewind,
-                            height: 16.h,
-                            width: 10.h,
+                      SizedBox(width: 14.h),
+                      Expanded(
+                        child: TextField(
+                          controller: searchController,
+                          decoration: const InputDecoration(
+                            hintText: "Tapez pour rechercher...",
+                            border: InputBorder.none,
                           ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: EdgeInsets.only(
-                                left: 14.h,
-                                bottom: 2.h,
-                              ),
-                              child: Text(
-                                "Tapez le nom d'un loisir",
-                                style: CustomTextStyles.bodyMediumGray400,
-                              ),
-                            ),
-                          ),
-                        ],
+                        ),
                       ),
-                    ),
+                    ],
                   ),
                 ),
                 CustomElevatedButton(
@@ -305,9 +317,9 @@ class _HomepagePageState extends State<HomepagePage> {
                     crossAxisSpacing: 16.0,
                     mainAxisSpacing: 16.0,
                   ),
-                  itemCount: items.length,
+                  itemCount: filteredItems.length,
                   itemBuilder: (context, index) {
-                    return _buildItemCard(items[index]);
+                    return _buildItemCard(filteredItems[index]);
                   },
                 )
               : Center(

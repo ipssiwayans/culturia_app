@@ -57,4 +57,9 @@ class CustomTextStyles {
   static get titleSmallBold => theme.textTheme.titleSmall!.copyWith(
         fontWeight: FontWeight.w700,
       );
+
+  // MAIN
+  static get titleMediumPrimaryColor => theme.textTheme.titleMedium!.copyWith(
+        color: appTheme.primaryColor,
+      );
 }

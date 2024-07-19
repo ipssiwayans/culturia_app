@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import '../core/app_export.dart';
 
 class BaseButton extends StatelessWidget {
-  BaseButton({
-    Key? key,
-    required this.text,
-    this.onPressed,
-    this.buttonStyle,
-    this.buttonTextStyle,
-    this.isDisabled,
-    this.height,
-    this.width,
-    this.margin,
-    this.alignment
-  });
+  BaseButton(
+      {Key? key,
+      required this.text,
+      this.onPressed,
+      this.buttonStyle,
+      this.buttonTextStyle,
+      this.isDisabled,
+      this.height,
+      this.width,
+      this.margin,
+      this.alignment});
 
   final String text;
 

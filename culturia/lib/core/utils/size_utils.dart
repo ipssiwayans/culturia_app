@@ -1,15 +1,14 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import '../app_export.dart'; // Ce sont les valeurs par défaut du figma
 
-// les constantes utilisées pour le responsive
 const num FIGMA_DESIGN_WIDTH = 428;
 const num FIGMA_DESIGN_HEIGHT = 926;
 const num FIGMA_DESIGN_STATUS_BAR = 0;
 
 extension ResponsiveExtension on num {
   double get _width => SizeUtils.width;
+
   double get h => ((this * _width) / FIGMA_DESIGN_WIDTH);
+
   double get fSize => ((this * _width) / FIGMA_DESIGN_WIDTH);
 }
 
@@ -40,7 +39,7 @@ class Sizer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
-      return OrientationBuilder(builder: (context, orientation){
+      return OrientationBuilder(builder: (context, orientation) {
         SizeUtils.setScreenSize(constraints, orientation);
         return builder(context, orientation, SizeUtils.deviceType);
       });
@@ -60,12 +59,12 @@ class SizeUtils {
   static late double width;
 
   static void setScreenSize(
-      BoxConstraints constraints,
-      Orientation currentOrientation,
-      ) {
+    BoxConstraints constraints,
+    Orientation currentOrientation,
+  ) {
     boxConstraints = constraints;
     orientation = currentOrientation;
-    if (orientation == Orientation.portrait){
+    if (orientation == Orientation.portrait) {
       width =
           boxConstraints.maxWidth.isNonZero(defaultValue: FIGMA_DESIGN_WIDTH);
       height = boxConstraints.maxHeight.isNonZero();

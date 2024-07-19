@@ -1,5 +1,6 @@
-import 'package:culturia/presentation/homepage_container_screen/homepage_container_screen.dart';
+import 'package:culturia/homepage/homepage_bottom_bar/homepage_bottom_bar.dart';
 import 'package:flutter/material.dart';
+
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
@@ -11,8 +12,8 @@ class InitPageScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: SingleChildScrollView(
-          child: Container(
+          body: SingleChildScrollView(
+        child: Container(
           width: double.maxFinite,
           padding: EdgeInsets.symmetric(
             horizontal: 38.h,
@@ -49,14 +50,16 @@ class InitPageScreen extends StatelessWidget {
                 buttonStyle: CustomButtonStyles.fillGrayTL10,
                 buttonTextStyle: CustomTextStyles.titleSmallBold,
                 onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => HomepageContainerScreen()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => HomepageContainerScreen()));
                 },
               )
             ],
           ),
-          ),
-        )
-      ),
+        ),
+      )),
     );
   }
 }

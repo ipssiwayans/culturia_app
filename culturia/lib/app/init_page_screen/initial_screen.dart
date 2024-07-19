@@ -1,4 +1,4 @@
-import 'package:culturia/homepage/homepage_bottom_bar/homepage_bottom_bar.dart';
+import 'package:culturia/app/homepage_bottom_bar/homepage_bottom_bar.dart';
 import 'package:flutter/material.dart';
 
 import '../../core/app_export.dart';

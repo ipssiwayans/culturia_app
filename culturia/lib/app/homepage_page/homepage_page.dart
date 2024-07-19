@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
-import 'widgets/categoriessection_item_widget.dart';
+import 'widgets/categories_section.dart';
 
 class HomepagePage extends StatefulWidget {
   const HomepagePage({Key? key}) : super(key: key);
@@ -73,8 +73,7 @@ class _HomepagePageState extends State<HomepagePage> {
         topItems = List<Map<String, dynamic>>.from(jsonResponse['items']);
       });
     } else {
-      print(
-          'Échec de la récupération des meilleurs éléments pour la catégorie $categoryId');
+      print('Échec lors de la récupération des top element de $categoryId');
     }
   }
 

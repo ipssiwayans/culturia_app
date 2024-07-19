@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/app_export.dart';
 import '../../widgets/custom_bottom_bar.dart';
 import '../homepage_page/homepage_page.dart';
+import '../add_items/add_item.dart';
 
 class HomepageContainerScreen extends StatelessWidget {
   HomepageContainerScreen({super.key});
@@ -40,7 +41,7 @@ class HomepageContainerScreen extends StatelessWidget {
       case BottomBarEnum.User:
         return AppRoutes.homepagePage;
       case BottomBarEnum.Close:
-        return "/";
+        return AppRoutes.addItemPage;
       case BottomBarEnum.Bookmark:
         return "/";
       case BottomBarEnum.Search:
@@ -52,6 +53,8 @@ class HomepageContainerScreen extends StatelessWidget {
     switch (currentRoute) {
       case AppRoutes.homepagePage:
         return const HomepagePage();
+      case AppRoutes.addItemPage:
+        return const AddItemPage();
       default:
         return const DefaultWidget();
     }

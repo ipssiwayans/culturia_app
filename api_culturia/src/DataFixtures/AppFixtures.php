@@ -39,7 +39,9 @@ class AppFixtures extends Fixture
                 ->setAuthor('author_' . $i)
                 ->setAuthorDescription('Je suis une description d\'auteur')
                 ->setCategory($category)
-                ->setAverageReview(3);
+                ->setAverageReview(3)
+                ->setImage('assets/images/picsum.png')
+                ->setCreationDate(new \DateTime());
             $manager->persist($item);
 
             //REVIEW

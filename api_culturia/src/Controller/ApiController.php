@@ -45,7 +45,7 @@ class ApiController extends AbstractController
         $data = json_decode($request->getContent(), true);
         $apiManager->addNewItem($data);
 
-        return new JsonResponse("Item added successfully", status: 200);
+        return new JsonResponse("Item added successfully", status: 201);
     }
 
     #[Route('/item/get-top-rated/{categoryId}', name: 'get_top_rated_items')]

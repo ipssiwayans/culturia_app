@@ -18,13 +18,13 @@ class CustomBottomBarState extends State<CustomBottomBar> {
 
   List<BottomMenuModel> bottomMenuList = [
     BottomMenuModel(
-      icon: ImageConstant.imgUser,
-      activeIcon: ImageConstant.imgUser,
+      icon: ImageConstant.imgHome,
+      activeIcon: ImageConstant.imgHome,
       type: BottomBarEnum.User,
     ),
     BottomMenuModel(
-      icon: ImageConstant.imgClose,
-      activeIcon: ImageConstant.imgClose,
+      icon: ImageConstant.imgAdd,
+      activeIcon: ImageConstant.imgAdd,
       type: BottomBarEnum.Close,
     ),
     BottomMenuModel(
@@ -33,8 +33,8 @@ class CustomBottomBarState extends State<CustomBottomBar> {
       type: BottomBarEnum.Bookmark,
     ),
     BottomMenuModel(
-      icon: ImageConstant.imgSearch,
-      activeIcon: ImageConstant.imgSearch,
+      icon: ImageConstant.imgSettings,
+      activeIcon: ImageConstant.imgSettings,
       type: BottomBarEnum.Search,
     )
   ];

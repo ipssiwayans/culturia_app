@@ -1,4 +1,4 @@
-export 'package:culturia/core/utils/image_constant.dart';
+export 'package:culturia/core/utils/image_path.dart';
 export 'package:culturia/core/utils/size_utils.dart';
 export 'package:culturia/routes/app_routes.dart';
 export 'package:culturia/theme/app_decoration.dart';

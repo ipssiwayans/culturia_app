@@ -145,4 +145,9 @@ class LightCodeColors {
   Color get whiteA700 => const Color(0XFFFDFDFD);
 
   Color get whiteA70001 => const Color(0xFFFFFFFF);
+
+  // MAIN APP COLOR
+  Color get primaryColor => const Color(0xFF806491);
+
+  Color get secondaryColor => const Color(0xFFB9848C);
 }

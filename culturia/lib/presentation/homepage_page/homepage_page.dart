@@ -1,37 +1,85 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
 import '../../core/app_export.dart';
 import '../../theme/custom_button_style.dart';
 import '../../widgets/custom_elevated_button.dart';
 import 'widgets/categoriessection_item_widget.dart';
-import 'widgets/userprofilesection_item_widget.dart';
 
-class HomepagePage extends StatelessWidget {
+class HomepagePage extends StatefulWidget {
   const HomepagePage({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context){
-    return SafeArea(
-      child: Scaffold(
-        body: Column(
+  _HomepagePageState createState() => _HomepagePageState();
+}
+
+class _HomepagePageState extends State<HomepagePage> {
+  List<Map<String, dynamic>> items = [];
+  List<Map<String, dynamic>> topItems = [];
+  String selectedCategoryName = 'Films';
+
+  @override
+  void initState() {
+    super.initState();
+    fetchItemsByCategory(1, 'Films');
+  }
+
+  void fetchItemsByCategory(int categoryId, String categoryName) async {
+    var url =
+        Uri.parse('http://10.0.2.2:8000/api/item/get-by-category/$categoryId');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      setState(() {
+        items = List<Map<String, dynamic>>.from(jsonResponse['items']);
+        selectedCategoryName = categoryName;
+      });
+      fetchTopItemsByCategory(categoryId);
+    } else {
+      print(
+          'Échec de la récupération des éléments pour la catégorie $categoryName');
+    }
+  }
+
+  void fetchTopItemsByCategory(int categoryId) async {
+    var url =
+        Uri.parse('http://10.0.2.2:8000/api/item/get-top-rated/$categoryId');
+    var response = await http.get(url);
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      setState(() {
+        topItems = List<Map<String, dynamic>>.from(jsonResponse['items']);
+        print(topItems);
+      });
+    } else {
+      print(
+          'Échec de la récupération des meilleurs éléments pour la catégorie $categoryId');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: SafeArea(
+        child: Column(
           children: [
-            SizedBox(height: 62.h),
             Expanded(
               child: SingleChildScrollView(
                 child: Column(
                   children: [
+                    SizedBox(height: 20.h),
                     _buildWelcomeSection(context),
                     SizedBox(height: 12.h),
                     _buildCategoriesSection(context),
                     SizedBox(height: 22.h),
-                    _buildTopMoviesSection(context),
-                    SizedBox(height: 20.h),
-                    _buildUserProfileSection(context),
-                    SizedBox(height: 6.h),
-                    _buildFeaturedFilmsSection(context)
+                    _buildTopItemsSection(context),
+                    _buildFeaturedItemsSection(context),
                   ],
-                )
+                ),
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -49,17 +97,17 @@ class HomepagePage extends StatelessWidget {
           Padding(
             padding: EdgeInsets.only(left: 4.h),
             child: Text(
-              'Bonjour Utilisateur',
+              'Bonjour',
               style: CustomTextStyles.bodyLargeGray60001,
             ),
           ),
           SizedBox(height: 4.h),
           Container(
-            width: 246.h,
+            width: 280.h,
             margin: EdgeInsets.only(left: 4.h),
             child: Text(
-              "Que voulez vous lire aujourd'hui ?",
-              maxLines: 2,
+              "Que voulez-vous rechercher aujourd'hui ?",
+              maxLines: 3,
               overflow: TextOverflow.ellipsis,
               style: theme.textTheme.headlineLarge!.copyWith(
                 height: 1.25,
@@ -101,11 +149,11 @@ class HomepagePage extends StatelessWidget {
                                 bottom: 2.h,
                               ),
                               child: Text(
-                                "Que recherchez vous ?",
+                                "Tapez le nom d'un loisir",
                                 style: CustomTextStyles.bodyMediumGray400,
                               ),
                             ),
-                          )
+                          ),
                         ],
                       ),
                     ),
@@ -117,10 +165,10 @@ class HomepagePage extends StatelessWidget {
                   text: "Sort by",
                   buttonStyle: CustomButtonStyles.fillGrayTL101,
                   buttonTextStyle: CustomTextStyles.bodyMediumBlack900,
-                )
+                ),
               ],
             ),
-          )
+          ),
         ],
       ),
     );
@@ -139,16 +187,124 @@ class HomepagePage extends StatelessWidget {
               width: 30.h,
             );
           },
-          itemCount: 5,
+          itemCount: 1,
           itemBuilder: (context, index) {
-            return const CategoriessectionItemWidget();
+            return CategoriesSectionItemWidget(
+              onCategorySelected: (categoryId, categoryName) {
+                fetchItemsByCategory(categoryId, categoryName);
+              },
+            );
           },
         ),
       ),
     );
   }
 
-  Widget _buildTopMoviesSection(BuildContext context) {
+  Widget _buildTopItemsSection(BuildContext context) {
+    return Container(
+      width: double.maxFinite,
+      margin: EdgeInsets.symmetric(horizontal: 28.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Align(
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "Top 5 des ${selectedCategoryName.toLowerCase()}",
+              style: theme.textTheme.headlineMedium,
+            ),
+          ),
+          SizedBox(height: 12.h),
+          topItems.isNotEmpty
+              ? SizedBox(
+                  height: 250.h,
+                  child: ListView.separated(
+                    padding: EdgeInsets.only(left: 30.h),
+                    scrollDirection: Axis.horizontal,
+                    separatorBuilder: (context, index) {
+                      return SizedBox(
+                        width: 40.h,
+                      );
+                    },
+                    itemCount: topItems.length,
+                    itemBuilder: (context, index) {
+                      return _buildTopItemCard(topItems[index]);
+                    },
+                  ),
+                )
+              : Center(
+                  child: Text(
+                    "Aucun élément trouvé",
+                    style: TextStyle(fontSize: 16.h),
+                  ),
+                ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildTopItemCard(Map<String, dynamic> item) {
+    return Container(
+      width: 150.h,
+      margin: EdgeInsets.only(bottom: 2.h),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CustomImageView(
+            imagePath: item['image'],
+            height: 150.h,
+            width: double.maxFinite,
+            radius: BorderRadius.circular(20.h),
+          ),
+          // SizedBox(height: 2.h),
+          Text(
+            item['title'],
+            style: CustomTextStyles.bodyLargeGray60001,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+          // SizedBox(height: 4.h),
+          Text(
+            item['author'],
+            style: TextStyle(
+              fontSize: 14.h,
+              color: Colors.grey,
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Widget _buildUserProfileSection(BuildContext context) {
+  //   return SizedBox(
+  //     width: double.maxFinite,
+  //     child: Align(
+  //       alignment: Alignment.centerLeft,
+  //       child: SizedBox(
+  //         height: 308.h,
+  //         child: ListView.separated(
+  //           padding: EdgeInsets.only(left: 28.h),
+  //           scrollDirection: Axis.horizontal,
+  //           separatorBuilder: (context, index) {
+  //             return SizedBox(
+  //               width: 40.h,
+  //             );
+  //           },
+  //           itemCount: 5,
+  //           itemBuilder: (context, index) {
+  //             return const UserprofilesectionItemWidget();
+  //           },
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
+
+  // Mise à jour pour afficher les items récupérés dans cette section
+  Widget _buildFeaturedItemsSection(BuildContext context) {
     return Container(
       width: double.maxFinite,
       margin: EdgeInsets.symmetric(horizontal: 28.h),
@@ -156,102 +312,49 @@ class HomepagePage extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Top 5 des films",
-            style: theme.textTheme.headlineMedium,
-          )
+            selectedCategoryName.isEmpty ? "Films" : selectedCategoryName,
+            style: CustomTextStyles.headlineMediumGray900,
+          ),
+          SizedBox(height: 12.h),
+          items.isNotEmpty
+              ? GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2,
+                    childAspectRatio: 0.7,
+                    crossAxisSpacing: 16.0,
+                    mainAxisSpacing: 16.0,
+                  ),
+                  itemCount: items.length,
+                  itemBuilder: (context, index) {
+                    return _buildItemCard(items[index]);
+                  },
+                )
+              : Center(
+                  child: Text(
+                    "Aucun élément trouvé",
+                    style: TextStyle(fontSize: 16.h),
+                  ),
+                ),
         ],
       ),
     );
   }
 
-  Widget _buildUserProfileSection(BuildContext context) {
-    return SizedBox(
-      width: double.maxFinite,
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: SizedBox(
-          height: 308.h,
-          child: ListView.separated(
-            padding: EdgeInsets.only(left: 28.h),
-            scrollDirection: Axis.horizontal,
-            separatorBuilder: (context, index) {
-              return SizedBox(
-                width: 40.h,
-              );
-            },
-            itemCount: 3,
-            itemBuilder: (context, index){
-              return const UserprofilesectionItemWidget();
-            },
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildFeaturedFilmsSection(BuildContext context) {
+  Widget _buildItemCard(Map<String, dynamic> item) {
     return Container(
-      width: double.maxFinite,
-      margin: EdgeInsets.symmetric(horizontal: 28.h),
-      child: Column(
+      height: 268.h,
+      margin: EdgeInsets.only(bottom: 24.h),
+      child: Stack(
+        alignment: Alignment.center,
         children: [
-          SizedBox(
+          CustomImageView(
+            imagePath: item['image'],
+            height: 268.h,
             width: double.maxFinite,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  "Films",
-                  style: CustomTextStyles.headlineMediumGray900,
-                ),
-                SizedBox(height: 12.h),
-                SizedBox(
-                  width: double.maxFinite,
-                  child: Row(
-                    children: [
-                      Expanded(
-                        child: Container(
-                          height: 268.h,
-                          child: Stack(
-                            alignment: Alignment.center,
-                            children: [
-                              CustomImageView(
-                                imagePath: ImageConstant.imgImage103268x172,
-                                height: 268.h,
-                                width: double.maxFinite,
-                                radius: BorderRadius.circular(
-                                  20.h
-                                ),
-                              ),
-                              CustomImageView(
-                                imagePath: ImageConstant.imgAkarIconsHome,
-                                height: 24.h,
-                                width: 24.h,
-                                alignment: Alignment.topLeft,
-                                margin: EdgeInsets.only(
-                                  left: 36.h,
-                                  top: 74.h,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(width: 24.h),
-                      CustomImageView(
-                        imagePath: ImageConstant.imgImage102,
-                        height: 268.h,
-                        width: 172.h,
-                        radius: BorderRadius.circular(
-                          20.h
-                        ),
-                      )
-                    ],
-                  ),
-                )
-              ],
-            ),
-          )
+            radius: BorderRadius.circular(20.h),
+          ),
         ],
       ),
     );

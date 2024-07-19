@@ -1,8 +1,8 @@
 import 'dart:io';
-import 'package:flutter/material.dart';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../core/app_export.dart';
 
 extension ImageTypeExtension on String {
   ImageType get imageType {
@@ -21,19 +21,19 @@ extension ImageTypeExtension on String {
 enum ImageType { svg, png, network, file, unknown }
 
 class CustomImageView extends StatelessWidget {
-  CustomImageView({super.key,
-    this.imagePath,
-    this.height,
-    this.width,
-    this.color,
-    this.fit,
-    this.alignment,
-    this.onTap,
-    this.radius,
-    this.margin,
-    this.border,
-    this.placeHolder = 'assets/images/image_not_found.png'
-});
+  CustomImageView(
+      {super.key,
+      this.imagePath,
+      this.height,
+      this.width,
+      this.color,
+      this.fit,
+      this.alignment,
+      this.onTap,
+      this.radius,
+      this.margin,
+      this.border,
+      this.placeHolder = 'assets/images/image_not_found.png'});
 
   String? imagePath;
 
@@ -77,9 +77,8 @@ class CustomImageView extends StatelessWidget {
   _buildCircleImage() {
     if (radius != null) {
       return ClipRRect(
-        borderRadius: radius ?? BorderRadius.zero,
-        child: _buildImageWithBorder()
-      );
+          borderRadius: radius ?? BorderRadius.zero,
+          child: _buildImageWithBorder());
     } else {
       return _buildImageWithBorder();
     }
@@ -103,7 +102,7 @@ class CustomImageView extends StatelessWidget {
     if (imagePath != null) {
       switch (imagePath!.imageType) {
         case ImageType.svg:
-          return Container(
+          return SizedBox(
             height: height,
             width: width,
             child: SvgPicture.asset(
@@ -112,10 +111,10 @@ class CustomImageView extends StatelessWidget {
               width: width,
               fit: fit ?? BoxFit.contain,
               colorFilter: color != null
-                ? ColorFilter.mode(
-                    color ?? Colors.transparent, BlendMode.srcIn)
+                  ? ColorFilter.mode(
+                      color ?? Colors.transparent, BlendMode.srcIn)
                   : null,
-              ),
+            ),
           );
         case ImageType.file:
           return Image.file(

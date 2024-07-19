@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../core/app_export.dart';
 import '../../widgets/custom_bottom_bar.dart';
 import '../homepage_page/homepage_page.dart';
@@ -29,8 +30,7 @@ class HomepageContainerScreen extends StatelessWidget {
     return CustomBottomBar(
       onChanged: (BottomBarEnum type) {
         Navigator.pushNamed(
-          navigatorKey.currentContext!, getCurrentRoute(type)
-        );
+            navigatorKey.currentContext!, getCurrentRoute(type));
       },
     );
   }
